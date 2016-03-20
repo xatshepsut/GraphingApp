@@ -2,7 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Graphing App" Height="350" Width="525">
-    <Grid>
-        
+    <Grid Name="main" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Name="toolbar" Background="LightGray">
+            <StackPanel Name="toolsContainer" Orientation="Horizontal" Background="Transparent">
+                <ToggleButton Name="nodeToggleBtn" Margin="5" VerticalAlignment="Center">Node</ToggleButton>
+            </StackPanel>
+        </Grid>
+        <Canvas Grid.Row="1" Name="whiteboard" Background="White" MouseLeftButtonDown="whiteboard_MouseLeftButtonDown"></Canvas>
     </Grid>
 </Window>
