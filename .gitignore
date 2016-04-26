@@ -1,3 +1,5 @@
+
+# Visual Studio / C#
 *.suo
 *.user
 
@@ -7,4 +9,15 @@
 
 # Visual Studio 2015 cache/options directory
 .vs/
+
+
+# Python environment
+virtual/
+*.spec
+
+[Bb]uild/
+[Dd]ist/
+
+
+
 

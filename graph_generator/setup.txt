@@ -1,0 +1,21 @@
+======== Setup ========
+
+1. Download and install Python 2.7  https://www.python.org/downloads/
+2. Go to graph_generator/ folder from terminal
+
+3. Install virtual enviroment tool
+> pip install virtualenv
+
+4. Create virtual environment for the project
+> virtualenv virtual
+
+5. Activate virtual environment
+> (Linux/Mac) source virtual/bin/activate
+> (Windows) virtual\Scripts\activate
+
+6. Install project dependencies
+> pip install -r requirements.txt
+
+7. Generate .exe
+> PyInstaller graph_generator.py
+ 
