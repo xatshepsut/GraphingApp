@@ -138,6 +138,43 @@ namespace GraphingApp
             }
         }
 
+        /// <summary>
+        /// Tests graph generator module calling and result parsing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void test_generateToggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String generatorDir = System.IO.Directory.GetCurrentDirectory() + "\\..\\..\\..\\graph_generator\\dist\\graph_generator";
+
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = generatorDir + "\\graph_generator.exe";
+            start.Arguments = "classic --graph-type=star --n=10";
+            start.WorkingDirectory = generatorDir;
+            start.CreateNoWindow = false;
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+
+            String filename = "";
+
+            using (Process process = Process.Start(start))
+            {
+                using (System.IO.StreamReader reader = process.StandardOutput)
+                {
+                    string output = reader.ReadToEnd();
+                    filename = System.Text.RegularExpressions.Regex.Match(output, "\"([^\"]*)\"").Groups[1].Value;
+                }
+            }
+
+            var graph = new AdjacencyGraph<int, Edge<int>>();
+            using (var xreader = System.Xml.XmlReader.Create(generatorDir + "\\" + filename))
+            {
+                graph.DeserializeFromGraphML(xreader,
+                    id => int.Parse(id),
+                    (source, target, id) => new Edge<int>(source, target)
+                );
+            }
+        }
         
 
     }
