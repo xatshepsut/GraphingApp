@@ -1,7 +1,7 @@
 ﻿<Window x:Class="GraphingApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Graphing App" Height="350" Width="525">
+        Title="Graphing App" MinHeight="350" MinWidth="525" Height="350" Width="525">
     <Grid Name="main" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,8 +17,10 @@
             </StackPanel>
         </Grid>
         <Rectangle Grid.Row="1" Fill="DarkGray" HorizontalAlignment="Stretch" />
-        <Canvas Grid.Row="2" Name="whiteboard" Background="White" 
-                MouseLeftButtonDown="whiteboard_MouseLeftButtonDown" MouseMove="whiteboard_MouseMove">            
-        </Canvas>
+        <ScrollViewer Grid.Row="2" Name="scroller" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Canvas Name="whiteboard" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  
+                MouseLeftButtonDown="whiteboard_MouseLeftButtonDown" MouseMove="whiteboard_MouseMove">
+            </Canvas>
+        </ScrollViewer>
     </Grid>
 </Window>

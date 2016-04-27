@@ -16,10 +16,22 @@ namespace GraphingApp
         private Node EdgeSourceNode { get; set; }
         private Node EdgeDestinationNode { get; set; }
 
+        private double LargestX { get; set; }
+        private double LargestY { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            this.SizeChanged += window_Resize;
+
+            LargestX = LargestY = 0;
+        }
+
+        private void window_Resize(object sender, System.EventArgs e)
+        {
+            whiteboard.Height = (scroller.ActualHeight < LargestY) ? LargestY : scroller.ActualHeight - 10;
+            whiteboard.Width = (scroller.ActualWidth < LargestX) ? LargestX : scroller.ActualWidth;
         }
 
         private Node addNode(Point position)
@@ -33,6 +45,15 @@ namespace GraphingApp
             Canvas.SetLeft(node, position.X - node.Diameter / 2);
             Canvas.SetZIndex(node, 20);
             whiteboard.Children.Add(node);
+
+            if (position.X + node.Diameter > LargestX)
+            {
+                LargestX = position.X + node.Diameter;
+            }
+            if (position.Y + node.Diameter > LargestY)
+            {
+                LargestY = position.Y + node.Diameter;
+            }
 
             return node;
         }
@@ -175,7 +196,6 @@ namespace GraphingApp
                 );
             }
         }
-        
 
     }
 }
