@@ -19,6 +19,9 @@ namespace GraphingApp
         private double LargestX { get; set; }
         private double LargestY { get; set; }
 
+        private int NodeIdCounter { get; set; }
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,6 +29,7 @@ namespace GraphingApp
             this.SizeChanged += window_Resize;
 
             LargestX = LargestY = 0;
+            NodeIdCounter = 0;
         }
 
         private void window_Resize(object sender, System.EventArgs e)
@@ -37,6 +41,8 @@ namespace GraphingApp
         private Node addNode(Point position)
         {
             var node= new Node();
+            node.Id = NodeIdCounter++;
+
             node.RemoveTriggered += this.node_RemoveTriggered;
             node.SelectTriggered += this.node_SelectTriggered;
             node.DiselectTriggered += this.node_DiselectTriggered;
@@ -170,7 +176,7 @@ namespace GraphingApp
 
             ProcessStartInfo start = new ProcessStartInfo();
             start.FileName = generatorDir + "\\graph_generator.exe";
-            start.Arguments = "classic --graph-type=star --n=10";
+            start.Arguments = "classic --graph-type=complete --n=5";
             start.WorkingDirectory = generatorDir;
             start.CreateNoWindow = false;
             start.UseShellExecute = false;
@@ -187,7 +193,7 @@ namespace GraphingApp
                 }
             }
 
-            var graph = new AdjacencyGraph<int, Edge<int>>();
+            var graph = new BidirectionalGraph<int, Edge<int>>();
             using (var xreader = System.Xml.XmlReader.Create(generatorDir + "\\" + filename))
             {
                 graph.DeserializeFromGraphML(xreader,
@@ -195,6 +201,7 @@ namespace GraphingApp
                     (source, target, id) => new Edge<int>(source, target)
                 );
             }
+
         }
 
     }

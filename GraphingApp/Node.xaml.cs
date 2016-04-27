@@ -23,7 +23,27 @@ namespace GraphingApp
         public event EventHandler SelectTriggered;
         public event EventHandler DiselectTriggered;
 
-        #region Diameter property
+
+        #region Id Property
+
+        public int Id
+        {
+            get { return (int)GetValue(IdProperty); }
+            set { SetValue(IdProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register("IdProperty", typeof(int), typeof(Node), new PropertyMetadata(25, OnIdPropertyChanged));
+
+        private static void OnIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            int value = (int)e.NewValue;
+            (d as Node).Label.Content = (value < 10) ? (" " + value) : value.ToString();
+        }
+
+        #endregion
+
+        #region Diameter Property
 
         public int Diameter
         {
