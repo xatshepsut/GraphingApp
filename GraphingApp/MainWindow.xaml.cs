@@ -12,6 +12,8 @@ namespace GraphingApp
 {
     public partial class MainWindow : Window
     {
+        private Dictionary<Node, List<Edge>> Nodes { get; set; }
+
         private Node SelectedNode { get; set; }
         private Node EdgeSourceNode { get; set; }
         private Node EdgeDestinationNode { get; set; }
@@ -28,6 +30,7 @@ namespace GraphingApp
 
             this.SizeChanged += window_Resize;
 
+            Nodes = new Dictionary<Node, List<Edge>>();
             LargestX = LargestY = 0;
             NodeIdCounter = 0;
         }
@@ -61,6 +64,8 @@ namespace GraphingApp
                 LargestY = position.Y + node.Diameter;
             }
 
+            Nodes.Add(node, new List<Edge>());
+
             return node;
         }
 
@@ -72,12 +77,20 @@ namespace GraphingApp
             }
 
             var edge = new Edge();
-            edge.RemoveTriggered += this.edge_RemoveTriggered;
-
             edge.SourcePosition = new Point(Canvas.GetLeft(source) + source.Diameter / 2, Canvas.GetTop(source) + source.Diameter / 2);
             edge.DestinationPosition = new Point(Canvas.GetLeft(destination) + destination.Diameter / 2, Canvas.GetTop(destination) + destination.Diameter / 2);
+            edge.SourceNode = source;
+            edge.DestinationNode = destination;
+
+            edge.RemoveTriggered += this.edge_RemoveTriggered;
 
             whiteboard.Children.Add(edge);
+
+            List<Edge> edges = null;
+            Nodes.TryGetValue(source, out edges);
+            edges.Add(edge);
+            Nodes.TryGetValue(destination, out edges);
+            edges.Add(edge);
 
             return edge;
         }
@@ -91,26 +104,47 @@ namespace GraphingApp
             node.SelectTriggered -= this.node_SelectTriggered;
             node.DiselectTriggered -= this.node_DiselectTriggered;
 
+            List<Edge> edges = null;
+            Nodes.TryGetValue(node, out edges);
+            foreach (var edge in edges)
+            {
+                var dest_node = (edge.SourceNode == node) ? edge.DestinationNode : edge.SourceNode;
+                List<Edge> dest_edges = null;
+                Nodes.TryGetValue(dest_node, out dest_edges);
+                dest_edges.Remove(edge);
+
+                whiteboard.Children.Remove((UIElement)edge);
+            }
+
+            Nodes.Remove(node);
+            if (Nodes.Count == 0)
+            {
+                NodeIdCounter = 0;
+                LargestX = LargestY = 0;
+            }
+
             whiteboard.Children.Remove((UIElement)sender);
         }
 
         private void node_SelectTriggered(object sender, EventArgs e)
         {
-            SelectedNode = (Node)sender;
-
             if (edgeToggleBtn.IsChecked == true)
             {
                 if (EdgeSourceNode == null)
                 {
                     EdgeSourceNode = (Node)sender;
                 }
-                else if (EdgeDestinationNode == null)
+                else if (EdgeDestinationNode == null && EdgeSourceNode != SelectedNode)
                 {
                     EdgeDestinationNode = (Node)sender;
                     addEdge(EdgeSourceNode, EdgeDestinationNode);
                     EdgeSourceNode = null;
                     EdgeDestinationNode = null;
                 }
+            }
+            else
+            {
+                SelectedNode = (Node)sender;
             }
         }
 
@@ -125,7 +159,15 @@ namespace GraphingApp
 
         private void edge_RemoveTriggered(object sender, EventArgs e)
         {
-            ((Edge)sender).RemoveTriggered -= this.edge_RemoveTriggered;
+            var edge = (Edge)sender;
+            edge.RemoveTriggered -= this.edge_RemoveTriggered;
+
+            List<Edge> edges = null;
+            Nodes.TryGetValue(edge.SourceNode, out edges);
+            edges.Remove(edge);
+            Nodes.TryGetValue(edge.DestinationNode, out edges);
+            edges.Remove(edge);
+
             whiteboard.Children.Remove((UIElement)sender);
         }
 
@@ -162,6 +204,20 @@ namespace GraphingApp
                 Point position = e.GetPosition(whiteboard);
                 Canvas.SetTop(SelectedNode, position.Y - SelectedNode.Diameter / 2);
                 Canvas.SetLeft(SelectedNode, position.X - SelectedNode.Diameter / 2);
+
+                List<Edge> edges = null;
+                Nodes.TryGetValue(SelectedNode, out edges);
+                foreach (var edge in edges)
+                {
+                    if (edge.SourceNode == SelectedNode)
+                    {
+                        edge.SourcePosition = position;
+                    }
+                    else
+                    {
+                        edge.DestinationPosition = position;
+                    }
+                }
             }
         }
 

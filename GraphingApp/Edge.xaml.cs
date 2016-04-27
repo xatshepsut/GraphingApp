@@ -21,6 +21,10 @@ namespace GraphingApp
     {
         public event EventHandler RemoveTriggered;
 
+        // TODO: Refactor
+        public Node SourceNode { get; set; }
+        public Node DestinationNode { get; set; }
+
         #region SourcePosition property
 
         public Point SourcePosition
