@@ -38,6 +38,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +57,203 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="QuickGraph.Serialization\DirectedGraphMLAlgorithm.cs" />
+    <Compile Include="QuickGraph.Serialization\DirectedGraphMLExtensions.cs" />
+    <Compile Include="QuickGraph.Serialization\DirectedGraphML\Dgml.cs" />
+    <Compile Include="QuickGraph.Serialization\GraphMLDeserializer.cs" />
+    <Compile Include="QuickGraph.Serialization\GraphMLExtensions.cs" />
+    <Compile Include="QuickGraph.Serialization\GraphMLSerializer.cs" />
+    <Compile Include="QuickGraph.Serialization\GraphMLXmlResolver.cs" />
+    <Compile Include="QuickGraph.Serialization\SerializationExtensions.cs" />
+    <Compile Include="QuickGraph.Serialization\SerializationHelper.cs" />
+    <Compile Include="QuickGraph.Serialization\SerializerBase.cs" />
+    <Compile Include="QuickGraph.Serialization\XmlSerializableGraphBase.cs" />
+    <Compile Include="QuickGraph\AdjacencyGraph.cs" />
+    <Compile Include="QuickGraph\Algorithms\AlgorithmBase.cs" />
+    <Compile Include="QuickGraph\Algorithms\AlgorithmEventHandler.cs" />
+    <Compile Include="QuickGraph\Algorithms\AlgorithmExtensions.cs" />
+    <Compile Include="QuickGraph\Algorithms\Cliques\BronKerboshMaximumCliqueAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\Cliques\MaximumCliqueAlgorithmBase.cs" />
+    <Compile Include="QuickGraph\Algorithms\ComputationState.cs" />
+    <Compile Include="QuickGraph\Algorithms\Contracts\IAlgorithmContract.cs" />
+    <Compile Include="QuickGraph\Algorithms\Contracts\IComputationContract.cs" />
+    <Compile Include="QuickGraph\Algorithms\DistanceRelaxers.cs" />
+    <Compile Include="QuickGraph\Algorithms\Exploration\CloneableVertexGraphExplorerAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\Exploration\ITransitionFactory.cs" />
+    <Compile Include="QuickGraph\Algorithms\Exploration\TransitionFactoryImplicitGraph.cs" />
+    <Compile Include="QuickGraph\Algorithms\IAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IComputation.cs" />
+    <Compile Include="QuickGraph\Algorithms\IConnectedComponentAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IDistanceRecorderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IDistanceRelaxer.cs" />
+    <Compile Include="QuickGraph\Algorithms\IEdgeColorizerAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IEdgePredecessorRecorderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IEndPathEdgeRecorderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\ITreeBuilderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IUndirectedTreeBuilderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IUndirectedVertexPredecessorRecorderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IVertexColorizerAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IVertexPredecessorRecorderAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\IVertexTimeStamperAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\MinimumSpanningTree\IMinimumSpanningTreeAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\MinimumSpanningTree\KruskalMinimumSpanningTreeAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\PageRankAlgorithm.cs" />
+    <Compile Include="QuickGraph\Algorithms\RandomGraphFactory.cs" />
+    <Compile Include="QuickGraph\Algorithms\RootedAlgorithmBase.cs" />
+    <Compile Include="QuickGraph\Algorithms\RootedSearchAlgorithmBase.cs" />
+    <Compile Include="QuickGraph\Algorithms\Services\IAlgorithmComponent.cs" />
+    <Compile Include="QuickGraph\Algorithms\Services\IAlgorithmServices.cs" />
+    <Compile Include="QuickGraph\Algorithms\Services\ICancelManager.cs" />
+    <Compile Include="QuickGraph\Algorithms\Services\IService.cs" />
+    <Compile Include="QuickGraph\ArrayAdjacencyGraph.cs" />
+    <Compile Include="QuickGraph\ArrayBidirectionalGraph.cs" />
+    <Compile Include="QuickGraph\ArrayUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\BidirectionAdapterGraph.cs" />
+    <Compile Include="QuickGraph\BidirectionalGraph.cs" />
+    <Compile Include="QuickGraph\BidirectionalMatrixGraph.cs" />
+    <Compile Include="QuickGraph\Collections\BinaryHeap.cs" />
+    <Compile Include="QuickGraph\Collections\BinaryQueue.cs" />
+    <Compile Include="QuickGraph\Collections\EdgeEdgeDictionary.cs" />
+    <Compile Include="QuickGraph\Collections\EdgeList.cs" />
+    <Compile Include="QuickGraph\Collections\FibonacciHeap.cs" />
+    <Compile Include="QuickGraph\Collections\FibonacciQueue.cs" />
+    <Compile Include="QuickGraph\Collections\ForestDisjointSet.cs" />
+    <Compile Include="QuickGraph\Collections\IDisjointSet.cs" />
+    <Compile Include="QuickGraph\Collections\IEdgeList.cs" />
+    <Compile Include="QuickGraph\Collections\IPriorityQueue.cs" />
+    <Compile Include="QuickGraph\Collections\IQueue.cs" />
+    <Compile Include="QuickGraph\Collections\IVertexEdgeDictionary.cs" />
+    <Compile Include="QuickGraph\Collections\Queue.cs" />
+    <Compile Include="QuickGraph\Collections\SoftHeap.cs" />
+    <Compile Include="QuickGraph\Collections\VertexEdgeDictionary.cs" />
+    <Compile Include="QuickGraph\Collections\VertexList.cs" />
+    <Compile Include="QuickGraph\CompressedSparseRowGraph.cs" />
+    <Compile Include="QuickGraph\Contracts\Collections\IDisjointSetContract.cs" />
+    <Compile Include="QuickGraph\Contracts\Collections\IEdgeListContract.cs" />
+    <Compile Include="QuickGraph\Contracts\Collections\IVertexEdgeDictionaryContract.cs" />
+    <Compile Include="QuickGraph\Contracts\DummyContract.cs" />
+    <Compile Include="QuickGraph\Contracts\EnumerableContract.cs" />
+    <Compile Include="QuickGraph\Contracts\GraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IBidirectionalGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IBidirectionalIncidenceGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\ICloneableEdgeContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IEdgeContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IEdgeListGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IEdgeSetContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IImplicitGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IImplicitUndirectedGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IImplicitVertexSetContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IIncidenceGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableBidirectionalGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableEdgeListGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableIncidenceGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableUndirectedGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableVertexAndEdgeSetContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableVertexListGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IMutableVertexSetContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IUndirectedEdgeContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IUndirectedGraphContract.cs" />
+    <Compile Include="QuickGraph\Contracts\IVertexSetContract.cs" />
+    <Compile Include="QuickGraph\CreateEdgeDelegate.cs" />
+    <Compile Include="QuickGraph\CreateVertexDelegate.cs" />
+    <Compile Include="QuickGraph\DelegateBidirectionalIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\DelegateImplicitGraph.cs" />
+    <Compile Include="QuickGraph\DelegateImplicitUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\DelegateIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\DelegateUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\DelegateVertexAndEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\Edge.cs" />
+    <Compile Include="QuickGraph\EdgeEdgeEventArgs.cs" />
+    <Compile Include="QuickGraph\EdgeEventArgs.cs" />
+    <Compile Include="QuickGraph\EdgeExtensions.cs" />
+    <Compile Include="QuickGraph\EdgeFactory.cs" />
+    <Compile Include="QuickGraph\EdgeIdentity.cs" />
+    <Compile Include="QuickGraph\EdgeListGraph.cs" />
+    <Compile Include="QuickGraph\EdgePredicate.cs" />
+    <Compile Include="QuickGraph\Enumerable.cs" />
+    <Compile Include="QuickGraph\EquatableEdge.cs" />
+    <Compile Include="QuickGraph\FuncDelegates.cs" />
+    <Compile Include="QuickGraph\GraphColor.cs" />
+    <Compile Include="QuickGraph\GraphExtensions.cs" />
+    <Compile Include="QuickGraph\HashCodeHelper.cs" />
+    <Compile Include="QuickGraph\IBidirectionalGraph.cs" />
+    <Compile Include="QuickGraph\IBidirectionalIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\ICloneableEdge.cs" />
+    <Compile Include="QuickGraph\IdentifiableEdgeFactory.cs" />
+    <Compile Include="QuickGraph\IdentifiableVertexFactory.cs" />
+    <Compile Include="QuickGraph\IEdge.cs" />
+    <Compile Include="QuickGraph\IEdgeListAndIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\IEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\IEdgeSet.cs" />
+    <Compile Include="QuickGraph\IGraph.cs" />
+    <Compile Include="QuickGraph\IHierarchy.cs" />
+    <Compile Include="QuickGraph\IHyperEdge.cs" />
+    <Compile Include="QuickGraph\IImplicitGraph.cs" />
+    <Compile Include="QuickGraph\IImplicitUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\IImplicitVertexSet.cs" />
+    <Compile Include="QuickGraph\IIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\IMutableBidirectionalGraph.cs" />
+    <Compile Include="QuickGraph\IMutableEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\IMutableGraph.cs" />
+    <Compile Include="QuickGraph\IMutableIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\IMutableUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\IMutableVertexAndEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\IMutableVertexAndEdgeSet.cs" />
+    <Compile Include="QuickGraph\IMutableVertexListGraph.cs" />
+    <Compile Include="QuickGraph\IMutableVertexSet.cs" />
+    <Compile Include="QuickGraph\ITagged.cs" />
+    <Compile Include="QuickGraph\IUndirectedEdge.cs" />
+    <Compile Include="QuickGraph\IUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\IVertexAndEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\IVertexListGraph.cs" />
+    <Compile Include="QuickGraph\IVertexSet.cs" />
+    <Compile Include="QuickGraph\NegativeCycleGraphException.cs" />
+    <Compile Include="QuickGraph\NegativeWeightException.cs" />
+    <Compile Include="QuickGraph\NonAcyclicGraphException.cs" />
+    <Compile Include="QuickGraph\NonStronglyConnectedGraphException.cs" />
+    <Compile Include="QuickGraph\ParallelEdgeNotAllowedException.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredBidirectionalGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredImplicitGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredImplicitVertexSetGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredIncidenceGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredUndirectedGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredVertexAndEdgeListGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\FilteredVertexListGraph.cs" />
+    <Compile Include="QuickGraph\Predicates\InDictionaryVertexPredicate.cs" />
+    <Compile Include="QuickGraph\Predicates\IsolatedVertexPredicate.cs" />
+    <Compile Include="QuickGraph\Predicates\ResidualEdgePrediate.cs" />
+    <Compile Include="QuickGraph\Predicates\ReversedResidualEdgePredicate.cs" />
+    <Compile Include="QuickGraph\Predicates\SinkVertexPredicate.cs" />
+    <Compile Include="QuickGraph\QuickGraphException.cs" />
+    <Compile Include="QuickGraph\ReversedBidirectionalListGraph.cs" />
+    <Compile Include="QuickGraph\SEdge.cs" />
+    <Compile Include="QuickGraph\SEquatableEdge.cs" />
+    <Compile Include="QuickGraph\SEquatableUndirectedEdge.cs" />
+    <Compile Include="QuickGraph\SReversedEdge.cs" />
+    <Compile Include="QuickGraph\STaggedEdge.cs" />
+    <Compile Include="QuickGraph\STaggedEquatableEdge.cs" />
+    <Compile Include="QuickGraph\STaggedUndirectedEdge.cs" />
+    <Compile Include="QuickGraph\SUndirectedEdge.cs" />
+    <Compile Include="QuickGraph\TaggedEdge.cs" />
+    <Compile Include="QuickGraph\TaggedEquatableEdge.cs" />
+    <Compile Include="QuickGraph\TaggedUndirectedEdge.cs" />
+    <Compile Include="QuickGraph\TryFuncDelegates.cs" />
+    <Compile Include="QuickGraph\UndirectedBidirectionalGraph.cs" />
+    <Compile Include="QuickGraph\UndirectedEdge.cs" />
+    <Compile Include="QuickGraph\UndirectedEdgeEventArgs.cs" />
+    <Compile Include="QuickGraph\UndirectedGraph.cs" />
+    <Compile Include="QuickGraph\VertexEventArgs.cs" />
+    <Compile Include="QuickGraph\VertexFactory.cs" />
+    <Compile Include="QuickGraph\VertexIdentity.cs" />
+    <Compile Include="QuickGraph\VertexIndexer.cs" />
+    <Compile Include="QuickGraph\VertexPredicate.cs" />
+    <Compile Include="Edge.xaml.cs">
+      <DependentUpon>Edge.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +269,10 @@
     <Page Include="Node.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Edge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +301,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="QuickGraph.Serialization\graphml-structure.xsd" />
+    <None Include="QuickGraph.Serialization\graphml.dtd" />
+    <None Include="QuickGraph.Serialization\graphml.xsd" />
+    <None Include="QuickGraph\Algorithms\Cliques\ncliques.pdf" />
+    <None Include="QuickGraph\Diagrams\TraversalInterfaces.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

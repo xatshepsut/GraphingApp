@@ -20,6 +20,8 @@ namespace GraphingApp
     public partial class Node : UserControl
     {
         public event EventHandler RemoveTriggered;
+        public event EventHandler SelectTriggered;
+        public event EventHandler DiselectTriggered;
 
         #region Diameter property
 
@@ -48,6 +50,16 @@ namespace GraphingApp
         private void Control_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             RemoveTriggered(this, EventArgs.Empty);
+        }
+
+        private void Control_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SelectTriggered(this, EventArgs.Empty);
+        }
+
+        private void Control_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            DiselectTriggered(this, EventArgs.Empty);
         }
     }
 }

@@ -5,13 +5,19 @@
     <Grid Name="main" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Name="toolbar" Background="LightGray">
-            <StackPanel Name="toolsContainer" Orientation="Horizontal" Background="Transparent">
-                <ToggleButton Name="nodeToggleBtn" Margin="5" VerticalAlignment="Center">Node</ToggleButton>
+            <StackPanel Name="toolsContainer" Orientation="Horizontal" Margin="0, 2" Background="Transparent">
+                <ToggleButton Name="nodeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="ToggleBtn_Checked">Node</ToggleButton>
+                <ToggleButton Name="edgeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="ToggleBtn_Checked">Edge</ToggleButton>
+                
             </StackPanel>
         </Grid>
-        <Canvas Grid.Row="1" Name="whiteboard" Background="White" MouseLeftButtonDown="whiteboard_MouseLeftButtonDown"></Canvas>
+        <Rectangle Grid.Row="1" Fill="DarkGray" HorizontalAlignment="Stretch"></Rectangle>
+        <Canvas Grid.Row="2" Name="whiteboard" Background="White" 
+                MouseLeftButtonDown="whiteboard_MouseLeftButtonDown" MouseMove="whiteboard_MouseMove">            
+        </Canvas>
     </Grid>
 </Window>
