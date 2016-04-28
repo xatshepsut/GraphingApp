@@ -10,11 +10,12 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Name="toolbar" Background="LightGray">
             <StackPanel Name="toolsContainer" Orientation="Horizontal" Margin="0, 2" Background="Transparent">
-                <ToggleButton Name="nodeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="ToggleBtn_Checked">Node</ToggleButton>
-                <ToggleButton Name="edgeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="ToggleBtn_Checked">Edge</ToggleButton>
+                <ToggleButton Name="nodeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="toggle_Checked">Node</ToggleButton>
+                <ToggleButton Name="edgeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="toggle_Checked">Edge</ToggleButton>
                 <Rectangle Margin="5, 8" Fill="DarkGray" Width="2" />
-                <Button Name="generateToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Click="generateToggleBtn_Click">Test Generate</Button>
+                <Button Name="generateBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Click="generate_Click">Test Generate</Button>
             </StackPanel>
+            <Button Name="clearBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="clear_Click">Clear</Button>
         </Grid>
         <Rectangle Grid.Row="1" Fill="DarkGray" HorizontalAlignment="Stretch" />
         <ScrollViewer Grid.Row="2" Name="scroller" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

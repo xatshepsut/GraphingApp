@@ -42,10 +42,10 @@ namespace GraphingApp
             whiteboard.Width = (scroller.ActualWidth < LargestX) ? LargestX : scroller.ActualWidth;
         }
 
-        private Node addNode(Point position)
+        private Node addNode(Point position, int id)
         {
             var node= new Node();
-            node.Id = NodeIdCounter++;
+            node.Id = id;
 
             node.RemoveTriggered += this.node_RemoveTriggered;
             node.SelectTriggered += this.node_SelectTriggered;
@@ -97,11 +97,23 @@ namespace GraphingApp
             return edge;
         }
 
-        #region Node Events
-
-        private void node_RemoveTriggered(object sender, EventArgs e)
+        private void removeAllNodes()
         {
-            var node = (Node)sender;
+            while (Nodes.Keys.Count > 0)
+            {
+                var enumerator = Nodes.Keys.GetEnumerator();
+                enumerator.MoveNext();
+                removeNode(enumerator.Current);
+            }
+        }
+
+        private void removeNode(Node node)
+        {
+            if (node == null || !Nodes.ContainsKey(node))
+            {
+                return;
+            }
+
             node.RemoveTriggered -= this.node_RemoveTriggered;
             node.SelectTriggered -= this.node_SelectTriggered;
             node.DiselectTriggered -= this.node_DiselectTriggered;
@@ -125,7 +137,27 @@ namespace GraphingApp
                 LargestX = LargestY = 0;
             }
 
-            whiteboard.Children.Remove((UIElement)sender);
+            whiteboard.Children.Remove((UIElement)node);
+        }
+
+        private void removeEdge(Edge edge)
+        {
+            edge.RemoveTriggered -= this.edge_RemoveTriggered;
+
+            List<Edge> edges = null;
+            Nodes.TryGetValue(edge.SourceNode, out edges);
+            edges.Remove(edge);
+            Nodes.TryGetValue(edge.DestinationNode, out edges);
+            edges.Remove(edge);
+
+            whiteboard.Children.Remove((UIElement)edge);
+        }
+
+        #region Node Events
+
+        private void node_RemoveTriggered(object sender, EventArgs e)
+        {
+            removeNode((Node)sender);
         }
 
         private void node_SelectTriggered(object sender, EventArgs e)
@@ -164,22 +196,13 @@ namespace GraphingApp
 
         private void edge_RemoveTriggered(object sender, EventArgs e)
         {
-            var edge = (Edge)sender;
-            edge.RemoveTriggered -= this.edge_RemoveTriggered;
-
-            List<Edge> edges = null;
-            Nodes.TryGetValue(edge.SourceNode, out edges);
-            edges.Remove(edge);
-            Nodes.TryGetValue(edge.DestinationNode, out edges);
-            edges.Remove(edge);
-
-            whiteboard.Children.Remove((UIElement)sender);
+            removeEdge((Edge)sender);
         }
 
         #endregion
 
 
-        private void ToggleBtn_Checked(object sender, RoutedEventArgs e)
+        private void toggle_Checked(object sender, RoutedEventArgs e)
         {
             if (sender == nodeToggleBtn)
             {
@@ -198,7 +221,7 @@ namespace GraphingApp
         {
             if (SelectedNode == null && nodeToggleBtn.IsChecked == true)
             {
-                addNode(e.GetPosition(whiteboard));
+                addNode(e.GetPosition(whiteboard), NodeIdCounter++);
             }
         }
 
@@ -236,7 +259,7 @@ namespace GraphingApp
             }
         }
 
-        private void generateToggleBtn_Click(object sender, RoutedEventArgs e)
+        private void generate_Click(object sender, RoutedEventArgs e)
         {
             var generateWindow = new GenerateOptionsWindow();
             generateWindow.ShowDialog();
@@ -253,6 +276,11 @@ namespace GraphingApp
             // draw graph
         }
 
+        private void clear_Click(object sender, RoutedEventArgs e)
+        {
+            removeAllNodes();
+        }
+
         public Point GetNodeCenter(Node node)
         {
             Point result = new Point();
@@ -260,6 +288,8 @@ namespace GraphingApp
             result.Y = Canvas.GetTop(node) + node.Diameter / 2;
             return result;
         }
+
+
 
     }
 }
