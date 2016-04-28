@@ -38,7 +38,63 @@ namespace GraphingApp
         private static void OnIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             int value = (int)e.NewValue;
-            (d as Node).Label.Content = (value < 10) ? (" " + value) : value.ToString();
+            (d as Node).Label.Content = value.ToString();
+        }
+
+        #endregion
+
+        #region Color Property
+
+        public Color Color
+        {
+            get { return (Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("ColorProperty", typeof(Color), typeof(Node), new PropertyMetadata(Colors.Black, OnColorPropertyChanged));
+
+        private static void OnColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as Node).Circle.Fill = new SolidColorBrush((Color)e.NewValue);
+            (d as Node).Circle.Stroke = new SolidColorBrush((Color)e.NewValue);
+        }
+
+        #endregion
+
+        #region HighlightColor Property
+
+        public Color HighlightColor
+        {
+            get { return (Color)GetValue(HighlightColorProperty); }
+            set { SetValue(HighlightColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty HighlightColorProperty =
+            DependencyProperty.Register("HighlightColorProperty", typeof(Color), typeof(Node), new PropertyMetadata(Colors.Black, OnHighlightColorPropertyChanged));
+
+        private static void OnHighlightColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as Node).OuterCicrle.Fill = new SolidColorBrush((Color)e.NewValue);
+            (d as Node).OuterCicrle.Stroke = new SolidColorBrush((Color)e.NewValue);
+        }
+
+        #endregion
+
+        #region Highlight Property
+
+        public bool Highlight
+        {
+            get { return (bool)GetValue(HighlightProperty); }
+            set { SetValue(HighlightProperty, value); }
+        }
+
+        public static readonly DependencyProperty HighlightProperty =
+            DependencyProperty.Register("HighlightProperty", typeof(bool), typeof(Node), new PropertyMetadata(false, OnHighlightPropertyChanged));
+
+        private static void OnHighlightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as Node).OuterCicrleContainer.Visibility = ((bool)e.NewValue == true) ? Visibility.Visible : Visibility.Hidden;
         }
 
         #endregion
@@ -52,7 +108,7 @@ namespace GraphingApp
         }
 
         public static readonly DependencyProperty DiameterProperty = 
-            DependencyProperty.Register("DiameterProperty", typeof(int), typeof(Node), new PropertyMetadata(25, OnDiameterPropertyChanged));
+            DependencyProperty.Register("DiameterProperty", typeof(int), typeof(Node), new PropertyMetadata(30, OnDiameterPropertyChanged));
 
         private static void OnDiameterPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -61,6 +117,7 @@ namespace GraphingApp
         }
 
         #endregion
+
 
         public Node()
         {            

@@ -6,10 +6,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" Height="Auto" Width="Auto">
     <Grid Background="Transparent">
+        <Grid Name="OuterCicrleContainer" Visibility="Hidden" >
+            <Ellipse Name="OuterCicrle" Height="30" Width="30" Stroke="Black" Fill="Black" />
+            <Ellipse Height="25" Width="25" Fill="White" Stroke="White" />
+        </Grid>
+                
         <Ellipse Name="Circle" Height="20" Width="20" Stroke="Black" Fill="Black" 
                  MouseLeftButtonDown="Control_MouseLeftButtonDown" MouseLeftButtonUp="Control_MouseLeftButtonUp"
                  MouseRightButtonDown="Control_MouseRightButtonDown" />
-        <Label Name="Label" Content="123" Foreground="White" FontSize="10" 
+        <Label Name="Label" Content="123" Foreground="White" FontSize="10" Margin="0, -1, 0, 0" VerticalAlignment="Center" HorizontalAlignment="Center"
                MouseLeftButtonDown="Control_MouseLeftButtonDown" MouseLeftButtonUp="Control_MouseLeftButtonUp"
                MouseRightButtonDown="Control_MouseRightButtonDown" />
     </Grid>

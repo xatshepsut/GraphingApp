@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using QuickGraph;
 using QuickGraph.Serialization;
+using System.Windows.Media;
 
 
 namespace GraphingApp
@@ -55,13 +56,14 @@ namespace GraphingApp
             Canvas.SetZIndex(node, 20);
             whiteboard.Children.Add(node);
 
-            if (position.X + node.Diameter > LargestX)
+            Point new_point = new Point(position.X + 2 * node.Diameter, position.Y + 2 * node.Diameter);
+            if (new_point.X > LargestX)
             {
-                LargestX = position.X + node.Diameter;
+                LargestX = new_point.X;
             }
-            if (position.Y + node.Diameter > LargestY)
+            if (new_point.Y > LargestY)
             {
-                LargestY = position.Y + node.Diameter;
+                LargestY = new_point.Y;
             }
 
             Nodes.Add(node, new List<Edge>());
@@ -71,20 +73,20 @@ namespace GraphingApp
 
         private Edge addEdge(Node source, Node destination)
         {
-            if (source == null || destination == null)
+            if (source == null || destination == null || source == destination)
             {
                 return null;
             }
 
             var edge = new Edge();
-            edge.SourcePosition = new Point(Canvas.GetLeft(source) + source.Diameter / 2, Canvas.GetTop(source) + source.Diameter / 2);
-            edge.DestinationPosition = new Point(Canvas.GetLeft(destination) + destination.Diameter / 2, Canvas.GetTop(destination) + destination.Diameter / 2);
-            edge.SourceNode = source;
-            edge.DestinationNode = destination;
-
             edge.RemoveTriggered += this.edge_RemoveTriggered;
 
-            whiteboard.Children.Add(edge);
+            edge.SourceNode = source;
+            edge.DestinationNode = destination;
+            edge.SourcePosition = GetNodeCenter(source);
+            edge.DestinationPosition = GetNodeCenter(destination);
+            
+           whiteboard.Children.Add(edge);
 
             List<Edge> edges = null;
             Nodes.TryGetValue(source, out edges);
@@ -133,11 +135,14 @@ namespace GraphingApp
                 if (EdgeSourceNode == null)
                 {
                     EdgeSourceNode = (Node)sender;
+                    EdgeSourceNode.Color = Colors.Red;
                 }
-                else if (EdgeDestinationNode == null && EdgeSourceNode != SelectedNode)
+                else if (EdgeDestinationNode == null)
                 {
                     EdgeDestinationNode = (Node)sender;
                     addEdge(EdgeSourceNode, EdgeDestinationNode);
+
+                    EdgeSourceNode.Color = Colors.Black;
                     EdgeSourceNode = null;
                     EdgeDestinationNode = null;
                 }
@@ -258,6 +263,14 @@ namespace GraphingApp
                 );
             }
 
+        }
+
+        public Point GetNodeCenter(Node node)
+        {
+            Point result = new Point();
+            result.X = Canvas.GetLeft(node) + node.Diameter / 2;
+            result.Y = Canvas.GetTop(node) + node.Diameter / 2;
+            return result;
         }
 
     }

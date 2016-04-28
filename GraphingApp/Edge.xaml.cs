@@ -65,6 +65,23 @@ namespace GraphingApp
 
         #endregion
 
+        #region Color Property
+
+        public Color Color
+        {
+            get { return (Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("ColorProperty", typeof(Color), typeof(Edge), new PropertyMetadata(Colors.Black, OnColorPropertyChanged));
+
+        private static void OnColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as Edge).Line.Stroke = new SolidColorBrush((Color)e.NewValue);
+        }
+
+        #endregion
         
         public Edge()
         {
