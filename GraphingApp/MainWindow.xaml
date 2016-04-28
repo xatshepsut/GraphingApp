@@ -13,7 +13,7 @@
                 <ToggleButton Name="nodeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="toggle_Checked">Node</ToggleButton>
                 <ToggleButton Name="edgeToggleBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Checked="toggle_Checked">Edge</ToggleButton>
                 <Rectangle Margin="5, 8" Fill="DarkGray" Width="2" />
-                <Button Name="generateBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Click="generate_Click">Test Generate</Button>
+                <Button Name="generateBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" Click="generate_Click">Generate</Button>
             </StackPanel>
             <Button Name="clearBtn" Margin="5" Padding="5, 2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="clear_Click">Clear</Button>
         </Grid>

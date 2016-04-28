@@ -265,15 +265,34 @@ namespace GraphingApp
             generateWindow.ShowDialog();
 
             var graph = generateWindow.GeneratedGraph;
-            if (graph == null && generateWindow.IsGenerated)
+            if (graph == null || !generateWindow.IsGenerated)
             {
-                MessageBox.Show("Graph generation faild", "Error", 
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                 return;
             }
 
-            // delete existing graph
-            // draw graph
+            removeAllNodes();
+
+            Dictionary<int, Node> nodeMap = new Dictionary<int, Node>();
+            double offsetX = whiteboard.ActualWidth / 2;
+            double offsetY = whiteboard.ActualHeight / 2;
+            double r = Math.Min(whiteboard.ActualWidth, whiteboard.ActualHeight) / 3;
+            int i = 0, n = graph.VertexCount;
+
+            foreach (var vertex in graph.Vertices)
+            {
+                Point position = new Point(offsetX + r * Math.Cos(2 * Math.PI * i / n), offsetY + r * Math.Sin(2 * Math.PI * i / n));
+                Node node = addNode(position, vertex);
+                nodeMap.Add(vertex, node);
+                i++;
+            }
+
+            foreach (var edge in graph.Edges)
+            {
+                Node sourceNode, destNode;
+                nodeMap.TryGetValue(edge.Source, out sourceNode);
+                nodeMap.TryGetValue(edge.Target, out destNode);
+                addEdge(sourceNode, destNode);
+            }
         }
 
         private void clear_Click(object sender, RoutedEventArgs e)

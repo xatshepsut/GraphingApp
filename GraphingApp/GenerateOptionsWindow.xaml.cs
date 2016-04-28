@@ -63,6 +63,12 @@ namespace GraphingApp
             GeneratedGraph = ParseGraphML(generatorDirectory + "\\" + filename);
             IsGenerated = true;
 
+            if (GeneratedGraph == null)
+            {
+                MessageBox.Show("Graph generation faild", "Error",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+
             this.Close();
         }
 
