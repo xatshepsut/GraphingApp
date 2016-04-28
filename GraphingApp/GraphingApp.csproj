@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GenerateOptionsWindow.xaml.cs">
+      <DependentUpon>GenerateOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QuickGraph.Serialization\DirectedGraphMLAlgorithm.cs" />
     <Compile Include="QuickGraph.Serialization\DirectedGraphMLExtensions.cs" />
     <Compile Include="QuickGraph.Serialization\DirectedGraphML\Dgml.cs" />
@@ -254,6 +257,10 @@
     <Compile Include="Edge.xaml.cs">
       <DependentUpon>Edge.xaml</DependentUpon>
     </Compile>
+    <Page Include="GenerateOptionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

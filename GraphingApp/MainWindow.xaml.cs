@@ -210,6 +210,16 @@ namespace GraphingApp
                 Canvas.SetTop(SelectedNode, position.Y - SelectedNode.Diameter / 2);
                 Canvas.SetLeft(SelectedNode, position.X - SelectedNode.Diameter / 2);
 
+                Point new_point = new Point(position.X + 2 * SelectedNode.Diameter, position.Y + 2 * SelectedNode.Diameter);
+                if (new_point.X > LargestX)
+                {
+                    LargestX = new_point.X;
+                }
+                if (new_point.Y > LargestY)
+                {
+                    LargestY = new_point.Y;
+                }
+
                 List<Edge> edges = null;
                 Nodes.TryGetValue(SelectedNode, out edges);
                 foreach (var edge in edges)
@@ -226,43 +236,21 @@ namespace GraphingApp
             }
         }
 
-        /// <summary>
-        /// Tests graph generator module calling and result parsing
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void test_generateToggleBtn_Click(object sender, RoutedEventArgs e)
+        private void generateToggleBtn_Click(object sender, RoutedEventArgs e)
         {
-            String generatorDir = System.IO.Directory.GetCurrentDirectory() + "\\..\\..\\..\\graph_generator\\dist\\graph_generator";
+            var generateWindow = new GenerateOptionsWindow();
+            generateWindow.ShowDialog();
 
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = generatorDir + "\\graph_generator.exe";
-            start.Arguments = "classic --graph-type=complete --n=5";
-            start.WorkingDirectory = generatorDir;
-            start.CreateNoWindow = false;
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = true;
-
-            String filename = "";
-
-            using (Process process = Process.Start(start))
+            var graph = generateWindow.GeneratedGraph;
+            if (graph == null && generateWindow.IsGenerated)
             {
-                using (System.IO.StreamReader reader = process.StandardOutput)
-                {
-                    string output = reader.ReadToEnd();
-                    filename = System.Text.RegularExpressions.Regex.Match(output, "\"([^\"]*)\"").Groups[1].Value;
-                }
+                MessageBox.Show("Graph generation faild", "Error", 
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                return;
             }
 
-            var graph = new BidirectionalGraph<int, Edge<int>>();
-            using (var xreader = System.Xml.XmlReader.Create(generatorDir + "\\" + filename))
-            {
-                graph.DeserializeFromGraphML(xreader,
-                    id => int.Parse(id),
-                    (source, target, id) => new Edge<int>(source, target)
-                );
-            }
-
+            // delete existing graph
+            // draw graph
         }
 
         public Point GetNodeCenter(Node node)
