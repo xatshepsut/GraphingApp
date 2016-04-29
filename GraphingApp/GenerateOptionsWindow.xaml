@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Number of odes:" Margin="-4, 0, 11, 0"  />
+            <Label Grid.Column="0" Content="Number of nodes:" Margin="-4, 0, 11, 0"  />
             <TextBox Grid.Column="1" Name="nodeNumberTextBox" Height="20" MaxLength="3" />
         </Grid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" >

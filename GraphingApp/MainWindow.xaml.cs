@@ -23,6 +23,10 @@ namespace GraphingApp
         private double LargestY { get; set; }
 
         private int NodeIdCounter { get; set; }
+        private Dictionary<int, Node> NodeIdMap { get; set; }
+
+        private bool IsSimulationMode { get; set; }
+        private Color MarkerColor { get; set; }
 
 
         public MainWindow()
@@ -31,7 +35,10 @@ namespace GraphingApp
 
             this.SizeChanged += window_Resize;
 
+            MarkerColor = (Color)ColorConverter.ConvertFromString("#54FF05");
+
             Nodes = new Dictionary<Node, List<Edge>>();
+            NodeIdMap = new Dictionary<int, Node>();
             LargestX = LargestY = 0;
             NodeIdCounter = 0;
         }
@@ -67,6 +74,7 @@ namespace GraphingApp
             }
 
             Nodes.Add(node, new List<Edge>());
+            NodeIdMap.Add(id, node);
 
             return node;
         }
@@ -277,14 +285,19 @@ namespace GraphingApp
             double offsetY = whiteboard.ActualHeight / 2;
             double r = Math.Min(whiteboard.ActualWidth, whiteboard.ActualHeight) / 3;
             int i = 0, n = graph.VertexCount;
+            int maxId = 0;
 
             foreach (var vertex in graph.Vertices)
             {
                 Point position = new Point(offsetX + r * Math.Cos(2 * Math.PI * i / n), offsetY + r * Math.Sin(2 * Math.PI * i / n));
                 Node node = addNode(position, vertex);
                 nodeMap.Add(vertex, node);
+
+                maxId = Math.Max(vertex, maxId);
                 i++;
             }
+
+            NodeIdCounter = ++maxId;
 
             foreach (var edge in graph.Edges)
             {
@@ -295,9 +308,81 @@ namespace GraphingApp
             }
         }
 
+        private void simulate_Click(object sender, RoutedEventArgs e)
+        {
+            var simulateWindow = new SimulateTerminalWindow();
+            simulateWindow.Execute += simulation_Execute;
+            simulateWindow.ExecutionEnded += simulation_End;
+            simulateWindow.Show();
+
+            IsSimulationMode = true;
+            SetupSimulationMode(true);
+        }
+
         private void clear_Click(object sender, RoutedEventArgs e)
         {
             removeAllNodes();
+        }
+
+        private void simulation_End(object sender, EventArgs e)
+        {
+            IsSimulationMode = false;
+            SetupSimulationMode(false);
+        }
+
+        private void simulation_Execute(object sender, ExecuteEventArgs e)
+        {
+            foreach (var tuple in e.Tuples)
+            {
+                int sourceId = tuple.Item1;
+                int destId = tuple.Item2;
+
+                if (!NodeIdMap.ContainsKey(sourceId) || !NodeIdMap.ContainsKey(destId))
+                {
+                    continue;
+                }
+
+                Node source = null, dest = null;
+                NodeIdMap.TryGetValue(sourceId, out source);
+                NodeIdMap.TryGetValue(destId, out dest);
+
+                Edge connector = null;
+                List<Edge> edges;
+                Nodes.TryGetValue(source, out edges);
+                foreach (var edge in edges)
+                {
+                    if (edge.SourceNode == dest || edge.DestinationNode == dest)
+                    {
+                        connector = edge;
+                        break;
+                    }
+                }
+
+                if (connector == null)
+                {
+                    continue;
+                }
+
+                dest.Color = MarkerColor;
+                connector.Color = MarkerColor;
+
+                // move data
+            }
+        }
+
+        private void SetupSimulationMode(bool enable)
+        {
+            if (enable)
+            {
+                nodeToggleBtn.IsChecked = false;
+                edgeToggleBtn.IsChecked = false;
+            }
+
+            nodeToggleBtn.IsEnabled = !enable;
+            edgeToggleBtn.IsEnabled = !enable;
+            generateBtn.IsEnabled = !enable;
+            simulateBtn.IsEnabled = !enable;
+            clearBtn.IsEnabled = !enable;
         }
 
         public Point GetNodeCenter(Node node)
