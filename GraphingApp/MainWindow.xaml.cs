@@ -27,6 +27,9 @@ namespace GraphingApp
 
         private bool IsSimulationMode { get; set; }
         private Color MarkerColor { get; set; }
+        private Node SimulationServerNode { get; set; }
+        private Stack<Node> SimulationMarkedNodes { get; set; }
+        private Stack<Edge> SimulationMarkedEdges { get; set; }
 
 
         public MainWindow()
@@ -39,6 +42,10 @@ namespace GraphingApp
 
             Nodes = new Dictionary<Node, List<Edge>>();
             NodeIdMap = new Dictionary<int, Node>();
+            SimulationMarkedNodes = new Stack<Node>();
+            SimulationMarkedEdges = new Stack<Edge>();
+
+
             LargestX = LargestY = 0;
             NodeIdCounter = 0;
         }
@@ -138,7 +145,9 @@ namespace GraphingApp
                 whiteboard.Children.Remove((UIElement)edge);
             }
 
+            NodeIdMap.Remove(node.Id);
             Nodes.Remove(node);
+
             if (Nodes.Count == 0)
             {
                 NodeIdCounter = 0;
@@ -165,6 +174,11 @@ namespace GraphingApp
 
         private void node_RemoveTriggered(object sender, EventArgs e)
         {
+            if (IsSimulationMode)
+            {
+                return;
+            }
+
             removeNode((Node)sender);
         }
 
@@ -204,6 +218,11 @@ namespace GraphingApp
 
         private void edge_RemoveTriggered(object sender, EventArgs e)
         {
+            if (IsSimulationMode)
+            {
+                return;
+            }
+
             removeEdge((Edge)sender);
         }
 
@@ -308,11 +327,27 @@ namespace GraphingApp
             }
         }
 
+        private List<int> GetNodeIds()
+        {
+            var result = new List<int>();
+            foreach (int key in NodeIdMap.Keys)
+            {
+                result.Add(key);
+            }
+
+            return result;
+        }
+
         private void simulate_Click(object sender, RoutedEventArgs e)
         {
             var simulateWindow = new SimulateTerminalWindow();
+            simulateWindow.NodeList = GetNodeIds();
+            
+            simulateWindow.MarkServer += simulation_MarkServer;
             simulateWindow.Execute += simulation_Execute;
             simulateWindow.ExecutionEnded += simulation_End;
+            simulateWindow.Closing += simulation_Closing;
+            
             simulateWindow.Show();
 
             IsSimulationMode = true;
@@ -324,14 +359,63 @@ namespace GraphingApp
             removeAllNodes();
         }
 
-        private void simulation_End(object sender, EventArgs e)
+        void simulation_MarkServer(object sender, MarkServerEventArgs e)
+        {
+            Node serverNode;
+            NodeIdMap.TryGetValue(e.Id, out serverNode);
+
+            if (serverNode != null)
+            {
+                serverNode.Highlight = true;
+                SimulationServerNode = serverNode;
+
+                // init data dict
+            }
+        }
+
+        void simulation_Closing(object sender, EventArgs e)
         {
             IsSimulationMode = false;
             SetupSimulationMode(false);
+
+            UnmarkSimulationParticpants();
+            if (SimulationServerNode != null)
+            {
+                SimulationServerNode.Highlight = false;
+            }
+
+            // clean data dict
+        }
+
+        private void UnmarkSimulationParticpants()
+        {
+            while (SimulationMarkedNodes.Count > 0)
+            {
+                var node = SimulationMarkedNodes.Pop();
+                node.Color = Colors.Black;
+            }
+            while (SimulationMarkedEdges.Count > 0)
+            {
+                var edge = SimulationMarkedEdges.Pop();
+                edge.Color = Colors.Black;
+            }
+        }
+
+        private void simulation_End(object sender, EventArgs e)
+        {
+            UnmarkSimulationParticpants();
+            if (SimulationServerNode != null)
+            {
+                SimulationServerNode.Highlight = false;
+            }
+
+            // clean data dict
         }
 
         private void simulation_Execute(object sender, ExecuteEventArgs e)
         {
+            UnmarkSimulationParticpants();
+
             foreach (var tuple in e.Tuples)
             {
                 int sourceId = tuple.Item1;
@@ -360,11 +444,14 @@ namespace GraphingApp
 
                 if (connector == null)
                 {
+                    // warning
                     continue;
                 }
 
                 dest.Color = MarkerColor;
                 connector.Color = MarkerColor;
+                SimulationMarkedNodes.Push(dest);
+                SimulationMarkedEdges.Push(connector);
 
                 // move data
             }
