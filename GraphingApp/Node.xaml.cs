@@ -22,6 +22,8 @@ namespace GraphingApp
         public event EventHandler RemoveTriggered;
         public event EventHandler SelectTriggered;
         public event EventHandler DiselectTriggered;
+        public event EventHandler HoverTriggered;
+        public event EventHandler UnhoverTriggered;
 
 
         #region Id Property
@@ -137,6 +139,16 @@ namespace GraphingApp
         private void Control_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             DiselectTriggered(this, EventArgs.Empty);
+        }
+
+        private void Control_MouseEnter(object sender, MouseEventArgs e)
+        {
+            HoverTriggered(this, EventArgs.Empty);
+        }
+
+        private void Control_MouseLeave(object sender, MouseEventArgs e)
+        {
+            UnhoverTriggered(this, EventArgs.Empty);
         }
     }
 }

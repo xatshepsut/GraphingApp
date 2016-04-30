@@ -13,9 +13,11 @@
                 
         <Ellipse Name="Circle" Height="20" Width="20" Stroke="Black" Fill="Black" 
                  MouseLeftButtonDown="Control_MouseLeftButtonDown" MouseLeftButtonUp="Control_MouseLeftButtonUp"
+                 MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" 
                  MouseRightButtonDown="Control_MouseRightButtonDown" />
         <Label Name="Label" Content="123" Foreground="White" FontSize="10" Margin="0, -1, 0, 0" VerticalAlignment="Center" HorizontalAlignment="Center"
                MouseLeftButtonDown="Control_MouseLeftButtonDown" MouseLeftButtonUp="Control_MouseLeftButtonUp"
+               MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" 
                MouseRightButtonDown="Control_MouseRightButtonDown" />
     </Grid>
 </UserControl>

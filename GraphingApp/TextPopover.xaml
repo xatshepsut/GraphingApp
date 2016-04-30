@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="GraphingApp.TextPopover"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="Auto" Width="Auto">
+    <Grid Name="popoverTextView" Background="LightGray" Opacity="30" Width="70" Height="40">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" Padding="3">
+            <TextBlock Name="popoverText" Width="64" TextWrapping="Wrap" Text=""  />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

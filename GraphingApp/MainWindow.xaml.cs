@@ -26,10 +26,12 @@ namespace GraphingApp
         private Dictionary<int, Node> NodeIdMap { get; set; }
 
         private bool IsSimulationMode { get; set; }
-        private Color MarkerColor { get; set; }
+        private Dictionary<int, List<int>> SimulationData { get; set; }
         private Node SimulationServerNode { get; set; }
         private Stack<Node> SimulationMarkedNodes { get; set; }
         private Stack<Edge> SimulationMarkedEdges { get; set; }
+        private Color MarkerColor { get; set; }
+        private TextPopover textPopover { get; set; }
 
 
         public MainWindow()
@@ -42,6 +44,8 @@ namespace GraphingApp
 
             Nodes = new Dictionary<Node, List<Edge>>();
             NodeIdMap = new Dictionary<int, Node>();
+
+            SimulationData = new Dictionary<int, List<int>>();
             SimulationMarkedNodes = new Stack<Node>();
             SimulationMarkedEdges = new Stack<Edge>();
 
@@ -64,6 +68,8 @@ namespace GraphingApp
             node.RemoveTriggered += this.node_RemoveTriggered;
             node.SelectTriggered += this.node_SelectTriggered;
             node.DiselectTriggered += this.node_DiselectTriggered;
+            node.HoverTriggered += this.node_HoverTriggered;
+            node.UnhoverTriggered += this.node_UnhoverTriggered;
 
             Canvas.SetTop(node, position.Y - node.Diameter / 2);
             Canvas.SetLeft(node, position.X - node.Diameter / 2);
@@ -132,6 +138,8 @@ namespace GraphingApp
             node.RemoveTriggered -= this.node_RemoveTriggered;
             node.SelectTriggered -= this.node_SelectTriggered;
             node.DiselectTriggered -= this.node_DiselectTriggered;
+            node.HoverTriggered -= this.node_HoverTriggered;
+            node.UnhoverTriggered -= this.node_UnhoverTriggered;
 
             List<Edge> edges = null;
             Nodes.TryGetValue(node, out edges);
@@ -210,6 +218,38 @@ namespace GraphingApp
         private void node_DiselectTriggered(object sender, EventArgs e)
         {
             SelectedNode = null;
+        }
+
+        private void node_HoverTriggered(object sender, EventArgs e)
+        {
+            if (IsSimulationMode)
+            {
+                var node = (Node)sender;
+
+                List<int> list;
+                SimulationData.TryGetValue(node.Id, out list);
+                if (list == null)
+                {
+                    return;
+                }
+
+                textPopover = new TextPopover();
+                textPopover.Text = String.Join<int>(",", list);
+
+                Canvas.SetTop(textPopover, Canvas.GetTop(node) + node.Diameter);
+                Canvas.SetLeft(textPopover, Canvas.GetLeft(node));
+                Canvas.SetZIndex(textPopover, 100);
+                whiteboard.Children.Add(textPopover);
+            }
+        }
+
+        private void node_UnhoverTriggered(object sender, EventArgs e)
+        {
+            if (IsSimulationMode)
+            {
+                whiteboard.Children.Remove(textPopover);
+                textPopover = null;
+            }
         }
 
         #endregion
@@ -369,7 +409,19 @@ namespace GraphingApp
                 serverNode.Highlight = true;
                 SimulationServerNode = serverNode;
 
-                // init data dict
+                var nodeIds = GetNodeIds();
+                foreach (var id in nodeIds)
+                {
+                    if (id == SimulationServerNode.Id)
+                    {
+                        SimulationData.Add(id, new List<int>());
+                        continue;
+                    }
+
+                    var data = new List<int>();
+                    data.Add(id);
+                    SimulationData.Add(id, data);
+                }
             }
         }
 
@@ -384,7 +436,7 @@ namespace GraphingApp
                 SimulationServerNode.Highlight = false;
             }
 
-            // clean data dict
+            SimulationData.Clear();
         }
 
         private void UnmarkSimulationParticpants()
@@ -409,7 +461,7 @@ namespace GraphingApp
                 SimulationServerNode.Highlight = false;
             }
 
-            // clean data dict
+            SimulationData.Clear();
         }
 
         private void simulation_Execute(object sender, ExecuteEventArgs e)
@@ -444,9 +496,33 @@ namespace GraphingApp
 
                 if (connector == null)
                 {
-                    // warning
+                    MessageBox.Show(String.Format("There is no edge connecting nodes with ids \"{0}\" and \"{1}\"", sourceId, destId), "Error",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                     continue;
                 }
+
+                if (source == SimulationServerNode)
+                {
+                    MessageBox.Show("Server node can't send information!", "Error",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    continue;
+                }
+
+                List<int> sourceData;
+                SimulationData.TryGetValue(sourceId, out sourceData);
+                if (sourceData.Count == 0)
+                {
+                    MessageBox.Show(String.Format("Node with id \"{0}\" doesn't have any information to send", sourceId), "Error",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    continue;
+                }
+
+                List<int> destData;
+                SimulationData.TryGetValue(destId, out destData);
+
+                var data = sourceData[sourceData.Count - 1];
+                sourceData.RemoveAt(sourceData.Count - 1);
+                destData.Add(data);
 
                 dest.Color = MarkerColor;
                 connector.Color = MarkerColor;
@@ -454,6 +530,7 @@ namespace GraphingApp
                 SimulationMarkedEdges.Push(connector);
 
                 // move data
+
             }
         }
 

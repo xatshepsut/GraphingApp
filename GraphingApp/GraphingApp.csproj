@@ -260,6 +260,9 @@
     <Compile Include="SimulateTerminalWindow.xaml.cs">
       <DependentUpon>SimulateTerminalWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TextPopover.xaml.cs">
+      <DependentUpon>TextPopover.xaml</DependentUpon>
+    </Compile>
     <Page Include="GenerateOptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -285,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SimulateTerminalWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TextPopover.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
